@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # ========== 1. Charger et parser le fichier XML ==========
-tree = ET.parse("data2.xml")  # remplace par ton vrai nom de fichier
+tree = ET.parse("data.xml")  # remplace par ton vrai nom de fichier
 root = tree.getroot()
 
 annees = []
