@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import statsmodels.api as sm
 import pandas as pd
 from functools import reduce
 
@@ -57,4 +58,19 @@ df_final = df_final.reset_index()
 
 # === Affichage / export ===
 print(df_final.head())
+
+y = df_final["Chômage"]
+
+# === Définir les variables explicatives ===
+X = df_final.drop(columns=["Année", "Chômage"])  # On enlève aussi "Année"
+
+# === Ajouter une constante pour l'interception (β₀) ===
+X = sm.add_constant(X)
+
+# === Créer et entraîner le modèle ===
+model = sm.OLS(y, X).fit()
+
+# === Résumé des résultats ===
+print(model.summary())
+
 # df_final.to_csv("donnees_niger_fusionnees_interpolees.csv", index=False)
