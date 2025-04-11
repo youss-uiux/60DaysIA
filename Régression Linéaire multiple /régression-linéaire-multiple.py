@@ -33,13 +33,16 @@ fichiers = {
     "Acces a lelectricite.xml": "Accès à l’électricité",
     "Chomage.xml": "Chômage",
     "croissance du pib.xml": "Croissance du PIB",
+    "envoi.xml": "Envois de fonds (% du PIB)",
+    "Spi.xml": "SPI (score statistique)",
+    "utilisateur internet.xml": "Utilisateurs d’Internet",
     # Ajoute ici d'autres fichiers : "nom_fichier.xml": "Nom de l'indicateur"
 }
 
 # === Extraire tous les fichiers et fusionner ===
 dfs = []
 for fichier, nom_colonne in fichiers.items():
-    df = extract_indicator_from_xml(f"/chemin/vers/{fichier}", nom_colonne)
+    df = extract_indicator_from_xml(f"{fichier}", nom_colonne)
     dfs.append(df)
 
 # === Fusionner sur l'année ===
