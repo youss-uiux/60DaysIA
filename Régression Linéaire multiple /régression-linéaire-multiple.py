@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import pandas as pd
 from functools import reduce
@@ -39,6 +40,8 @@ fichiers = {
 dfs = [extract_indicator_from_xml(fichier, label) for fichier, label in fichiers.items()]
 df_final = reduce(lambda left, right: pd.merge(left, right, on="Année", how="outer"), dfs)
 
+print(df_final.head())
+
 # === Traitement pour interpolation ===
 # Revenir à une structure classique
 df_final.reset_index(inplace=True)
@@ -59,10 +62,10 @@ df_final = df_final.reset_index()
 # === Affichage / export ===
 print(df_final.head())
 
-y = df_final["Chômage"]
+y = df_final["Accès à l’électricité"]
 
 # === Définir les variables explicatives ===
-X = df_final.drop(columns=["Année", "Chômage"])  # On enlève aussi "Année"
+X = df_final.drop(columns=["Année", "Accès à l’électricité"])  # On enlève aussi "Année"
 
 # === Ajouter une constante pour l'interception (β₀) ===
 X = sm.add_constant(X)
@@ -72,5 +75,18 @@ model = sm.OLS(y, X).fit()
 
 # === Résumé des résultats ===
 print(model.summary())
+
+# Prédictions du modèle
+y_pred = model.predict(X)
+
+plt.figure(figsize=(10, 6))
+plt.plot(df_final["Année"], y, label="Chômage réel", marker='o')
+plt.plot(df_final["Année"], y_pred, label="Chômage prédit", linestyle='--', marker='x')
+plt.xlabel("Année")
+plt.ylabel("Taux de chômage (%)")
+plt.title("Chômage réel vs prédit par le modèle de régression multiple")
+plt.legend()
+plt.grid(True)
+plt.show()
 
 # df_final.to_csv("donnees_niger_fusionnees_interpolees.csv", index=False)
