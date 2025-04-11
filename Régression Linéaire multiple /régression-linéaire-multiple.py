@@ -3,9 +3,6 @@ import pandas as pd
 from functools import reduce
 
 def extract_indicator_from_xml(file_path, indicator_label, country="Niger"):
-    """
-    Extrait les données pour un indicateur donné depuis un fichier XML de la Banque mondiale.
-    """
     tree = ET.parse(file_path)
     root = tree.getroot()
 
@@ -27,7 +24,7 @@ def extract_indicator_from_xml(file_path, indicator_label, country="Niger"):
 
     return pd.DataFrame(data)
 
-# === Liste des fichiers XML à traiter avec les noms d’indicateurs correspondants ===
+# === Fichiers XML à fusionner ===
 fichiers = {
     "espérence de vie.xml": "Espérance de vie",
     "Acces a lelectricite.xml": "Accès à l’électricité",
@@ -35,20 +32,29 @@ fichiers = {
     "croissance du pib.xml": "Croissance du PIB",
     "envoi.xml": "Envois de fonds (% du PIB)",
     "Spi.xml": "SPI (score statistique)",
-    "utilisateur internet.xml": "Utilisateurs d’Internet",
-    # Ajoute ici d'autres fichiers : "nom_fichier.xml": "Nom de l'indicateur"
+    "utilisateur internet.xml": "Utilisateurs d’Internet"
 }
 
-# === Extraire tous les fichiers et fusionner ===
-dfs = []
-for fichier, nom_colonne in fichiers.items():
-    df = extract_indicator_from_xml(f"{fichier}", nom_colonne)
-    dfs.append(df)
-
-# === Fusionner sur l'année ===
+dfs = [extract_indicator_from_xml(fichier, label) for fichier, label in fichiers.items()]
 df_final = reduce(lambda left, right: pd.merge(left, right, on="Année", how="outer"), dfs)
-df_final = df_final.sort_values("Année").reset_index(drop=True)
 
-# === Afficher ou enregistrer le résultat ===
+# === Traitement pour interpolation ===
+# Revenir à une structure classique
+df_final.reset_index(inplace=True)
+
+df_final = df_final.sort_values("Année")
+df_final.set_index("Année", inplace=True)
+
+# Convertir les colonnes en numériques
+for col in df_final.columns:
+    df_final[col] = pd.to_numeric(df_final[col], errors='coerce')
+
+# Interpolation + forward fill + backward fill
+df_final = df_final.interpolate(method='linear')  # entre deux années connues
+df_final = df_final.fillna(method='ffill')        # valeurs précédentes
+df_final = df_final.fillna(method='bfill')        # valeurs suivantes
+df_final = df_final.reset_index()
+
+# === Affichage / export ===
 print(df_final.head())
-# df_final.to_csv("donnees_niger_fusionnees.csv", index=False)
+# df_final.to_csv("donnees_niger_fusionnees_interpolees.csv", index=False)
