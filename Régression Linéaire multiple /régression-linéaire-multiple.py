@@ -78,15 +78,23 @@ print(model.summary())
 
 # Prédictions du modèle
 y_pred = model.predict(X)
+r_squared = model.rsquared * 100  # pourcentage
 
 plt.figure(figsize=(10, 6))
-plt.plot(df_final["Année"], y, label="Chômage réel", marker='o')
-plt.plot(df_final["Année"], y_pred, label="Chômage prédit", linestyle='--', marker='x')
+plt.plot(df_final["Année"], y, label="Accès à l'électricité Réel", marker='o', color='blue')
+plt.plot(df_final["Année"], y_pred, label="Accès à l'électricité Prédit", linestyle='--', marker='x', color='orange')
+
+# Titres et axes
 plt.xlabel("Année")
-plt.ylabel("Taux de chômage (%)")
-plt.title("Chômage réel vs prédit par le modèle de régression multiple")
+plt.ylabel("Accès à l’électricité (%)")
+plt.title("Modèle de régression : Accès à l’électricité au Niger")
+
+# Affichage du R² sur le graphique
+plt.text(df_final["Année"].min() + 1, max(y) - 5, f"R² = {r_squared:.2f}%", fontsize=12, color='green')
+
 plt.legend()
 plt.grid(True)
+plt.tight_layout()
 plt.show()
 
 # df_final.to_csv("donnees_niger_fusionnees_interpolees.csv", index=False)
