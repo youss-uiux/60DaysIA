@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 import pandas as pd
 from functools import reduce
@@ -65,46 +66,29 @@ df_final = df_final.reset_index()
 # === Affichage / export ===
 print(df_final.head())
 
+# Séparation des données
+X = df_final.drop(columns=["Année", "Accès à l’électricité"])
 y = df_final["Accès à l’électricité"]
 
-# === Définir les variables explicatives ===
-X = df_final.drop(columns=["Année", "Accès à l’électricité"])  # On enlève aussi "Année"
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# === Ajouter une constante pour l'interception (β₀) ===
-X = sm.add_constant(X)
+# Transformation polynomiale
+poly = PolynomialFeatures(degree=1, include_bias=False)
+X_train_poly = poly.fit_transform(X_train)
+X_test_poly = poly.transform(X_test)
 
-# Créer une transformation polynomiale de degré 2 (tu peux mettre 3, 4, etc.)
-poly = PolynomialFeatures(degree=2, include_bias=False)
-X_poly = poly.fit_transform(X)
-
-# Si tu veux voir les noms des nouvelles colonnes :
-poly_feature_names = poly.get_feature_names_out(X.columns)
-print(poly_feature_names)
-
-# Tu peux aussi reconstruire un DataFrame lisible si tu veux l’afficher :
-import pandas as pd
-X_poly_df = pd.DataFrame(X_poly, columns=poly_feature_names)
-print(X_poly_df.head())
+# Entraîner sur le set d'entraînement
 model = LinearRegression()
-model.fit(X_poly, y)
-# Prédictions avec le modèle polynomial
-y_pred_poly = model.predict(X_poly)
+model.fit(X_train_poly, y_train)
+
+# Prédictions
+y_pred_train = model.predict(X_train_poly)
+y_pred_test = model.predict(X_test_poly)
+
+# Scores
+r2_train = r2_score(y_train, y_pred_train)
+r2_test = r2_score(y_test, y_pred_test)
 
 # Affichage
-plt.figure(figsize=(10, 6))
-plt.plot(df_final["Année"], y, label="Réel", marker='o', color='blue')
-plt.plot(df_final["Année"], y_pred_poly, label="Régression polynomiale", linestyle='--', marker='x', color='orange')
-# plt.plot(df["Année"], y_pred_linear, label="Régression linéaire", linestyle=':', color='green')  # si besoin
-
-plt.xlabel("Année")
-plt.ylabel("Accès à l’électricité (%)")
-plt.title("Comparaison : Réel vs Prédit (Régression polynomiale)")
-plt.legend()
-plt.grid(True)
-
-# Ajouter le R² sur le graphique
-r2 = r2_score(y, y_pred_poly)
-plt.text(df_final["Année"].min()+1, max(y) - 5, f"R² = {r2*100:.2f}%", fontsize=12, color='green')
-
-plt.tight_layout()
-plt.show()
+print(f"R² (train) : {r2_train:.4f}")
+print(f"R² (test)  : {r2_test:.4f}")
