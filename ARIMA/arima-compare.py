@@ -38,7 +38,7 @@ mse_d0 = mean_squared_error(df["Croissance PIB"], result_d0.fittedvalues)
 
 
 # === Modèle ARIMA(1, 1, 1)
-model_d1 = ARIMA(df["Croissance PIB"], order=(1, 1, 1))
+model_d1 = ARIMA(df["Croissance PIB"], order=(2, 0, 2))
 result_d1 = model_d1.fit()
 residuals_d1 = result_d1.resid
 
@@ -58,11 +58,11 @@ mse_d1 = mean_squared_error(true_values_d1, fitted_d1)
 # === Affichage des critères
 print("=== Comparaison des modèles ===")
 print(f"AIC ARIMA(1,0,1) : {result_d0.aic}")
-print(f"AIC ARIMA(1,1,1) : {result_d1.aic}")
+print(f"AIC ARIMA(2,0,2) : {result_d1.aic}")
 print(f"BIC ARIMA(1,0,1) : {result_d0.bic}")
-print(f"BIC ARIMA(1,1,1) : {result_d1.bic}")
+print(f"BIC ARIMA(2,0,2) : {result_d1.bic}")
 print(f"MSE ARIMA(1,0,1) : {mse_d0}")
-print(f"MSE ARIMA(1,1,1) : {mse_d1}")
+print(f"MSE ARIMA(2,0,2) : {mse_d1}")
 
 # === Graphique des résidus
 plt.figure(figsize=(12, 5))
@@ -74,19 +74,10 @@ plt.title("Résidus ARIMA(1,0,1)")
 plt.grid(True)
 
 plt.subplot(1, 2, 2)
-plt.plot(residuals_d1, label="Résidus ARIMA(1,1,1)", color='green')
+plt.plot(residuals_d1, label="Résidus ARIMA(2,0,2)", color='green')
 plt.axhline(0, color='gray', linestyle='--')
-plt.title("Résidus ARIMA(1,1,1)")
+plt.title("Résidus ARIMA(2,0,2)")
 plt.grid(True)
 
-plt.tight_layout()
-plt.show()
-
-residuals = result_d1.resid
-
-# Tracer l'ACF
-plt.figure(figsize=(8, 4))
-plot_acf(residuals, lags=30)
-plt.title("ACF des résidus – ARIMA(1,1,1)")
 plt.tight_layout()
 plt.show()

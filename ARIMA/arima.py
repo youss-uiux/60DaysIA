@@ -58,7 +58,7 @@ plt.title("PACF - Croissance PIB")
 plt.show()
 
 # === Création du modèle ARIMA (exemple avec p=1, d=1, q=1) ===
-model = ARIMA(df["Croissance PIB"], order=(1, 0, 1))
+model = ARIMA(df["Croissance PIB"], order=(2, 0, 2))
 resultats = model.fit()
 
 # === Affichage du résumé ===
