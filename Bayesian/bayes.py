@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
 import pandas as pd
 from functools import reduce
 import bambi as bmb
@@ -46,5 +47,7 @@ model = bmb.Model(
     data=df
 )
 results = model.fit(draws=2000, tune=1000)
-az.summary(results)
+print(az.summary(results))
 az.plot_trace(results)
+plt.tight_layout()
+plt.show()
