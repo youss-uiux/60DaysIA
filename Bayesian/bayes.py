@@ -49,7 +49,7 @@ df_final = reduce(lambda left, right: pd.merge(left, right, on="Année", how="ou
 df_final = df_final.interpolate().fillna(method='ffill').fillna(method='bfill')
 df = df_final.drop(columns=["Année"])
 model = bmb.Model(
-    formula="`Croissance du PIB` ~ `Migration nette` + Chômage + `Accès à l’électricité` + `Utilisateurs d’Internet` + `Envois de fonds (% du PIB)` + `Croissance de la population (% annuel)` +`Inflation, prix à la consommation (% annuel)` +`Production d’électricité à partir de sources d’énergie renouvelables, hors énergie hydroélectrique (% du total)`",
+    formula="`Inflation, prix à la consommation (% annuel)` ~  + Chômage + `Accès à l’électricité` + `Utilisateurs d’Internet` + `Envois de fonds (% du PIB)` + `Croissance de la population (% annuel)` +`Croissance du PIB` +`Production d’électricité à partir de sources d’énergie renouvelables, hors énergie hydroélectrique (% du total)`",
     data=df
 )
 results = model.fit(draws=2000, tune=1000)
