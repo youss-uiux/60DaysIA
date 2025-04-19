@@ -1,8 +1,8 @@
 import xml.etree.ElementTree as ET
-import matplotlib.pyplot as plt
-import statsmodels.api as sm
 import pandas as pd
 from functools import reduce
+import bambi as bmb
+import arviz as az
 
 def extract_indicator_from_xml(file_path, indicator_label, country="Niger"):
     tree = ET.parse(file_path)
@@ -38,3 +38,13 @@ fichiers = {
 }
 
 dfs = [extract_indicator_from_xml(fichier, label) for fichier, label in fichiers.items()]
+df_final = reduce(lambda left, right: pd.merge(left, right, on="Année", how="outer"), dfs)
+df_final = df_final.interpolate().fillna(method='ffill').fillna(method='bfill')
+df = df_final.drop(columns=["Année"])
+model = bmb.Model(
+    formula="`Croissance du PIB` ~ `Espérance de vie` + Chômage + `Accès à l’électricité` + `Utilisateurs d’Internet` + `Envois de fonds (% du PIB)` + `SPI (score statistique)`",
+    data=df
+)
+results = model.fit(draws=2000, tune=1000)
+az.summary(results)
+az.plot_trace(results)
