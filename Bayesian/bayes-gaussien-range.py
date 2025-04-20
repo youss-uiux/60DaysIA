@@ -5,8 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 import pandas as pd
 from functools import reduce
-import bambi as bmb
-import arviz as az
 import numpy as np
 
 
