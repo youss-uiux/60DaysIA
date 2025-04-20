@@ -48,8 +48,8 @@ df = df.dropna()
 df = df.drop(columns=["Année"])  # Si Année n’est pas utile
 
 # 2. Définis la cible (Y) et les variables explicatives (X)
-X = df.drop(columns=["Utilisateurs d’Internet"])  # ou la variable que tu veux prédire
-y = df["Utilisateurs d’Internet"]
+X = df.drop(columns=["Accès à l’électricité"])  # ou la variable que tu veux prédire
+y = df["Accès à l’électricité"]
 
 # 3. Split train/test
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
