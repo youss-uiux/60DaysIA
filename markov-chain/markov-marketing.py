@@ -16,6 +16,7 @@ transition_matrix = np.array([
     [0.0, 0.0, 0.0, 0.0, 1.0]   # Quitte (état absorbant)
 ])
 
+
 # Création du graphe dirigé
 G = nx.DiGraph()
 
@@ -77,3 +78,21 @@ print(f"- Ont quitté : {resultats['Quitte']} ({resultats['Quitte']/10:.1f}%)\n"
 print("🧾 Exemples de parcours utilisateur :")
 for parcours in exemples:
     print(" → ".join(parcours))
+
+
+# Génération du diagramme de flux
+plt.figure(figsize=(len(parcours)*2.5, 2))
+
+# Placement horizontal des étapes
+for i, etape in enumerate(parcours):
+    plt.text(i, 0, etape, fontsize=12, ha='center', va='center',
+             bbox=dict(boxstyle="round,pad=0.4", facecolor='lightblue', edgecolor='black'))
+
+    if i < len(parcours) - 1:
+        plt.arrow(i + 0.4, 0, 0.2, 0, head_width=0.05, head_length=0.1, fc='gray', ec='gray')
+
+plt.axis("off")
+plt.title("Parcours utilisateur simulé", fontsize=14)
+plt.tight_layout()
+plt.show()
+
