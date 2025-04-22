@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import Counter
+import networkx as nx
 
 # États du parcours
 etats = ["Accueil", "Produit", "Panier", "Achat", "Quitte"]
@@ -14,6 +15,31 @@ transition_matrix = np.array([
     [0.0, 0.0, 0.0, 1.0, 0.0],  # Achat (état absorbant)
     [0.0, 0.0, 0.0, 0.0, 1.0]   # Quitte (état absorbant)
 ])
+
+# Création du graphe dirigé
+G = nx.DiGraph()
+
+# Ajout des arcs avec poids
+for i in range(len(etats)):
+    for j in range(len(etats)):
+        prob = transition_matrix[i, j]
+        if prob > 0:
+            G.add_edge(etats[i], etats[j], weight=prob)
+
+# Position des nœuds pour un affichage clair
+pos = nx.spring_layout(G, seed=42)  # layout aléatoire mais fixe
+
+# Dessin des nœuds et des flèches
+plt.figure(figsize=(10, 7))
+nx.draw(G, pos, with_labels=True, node_size=2500, node_color="lightblue", font_size=10, font_weight="bold", arrowsize=20)
+
+# Affichage des poids (probabilités)
+edge_labels = {(u, v): f"{d['weight']:.2f}" for u, v, d in G.edges(data=True)}
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=9)
+
+plt.title("Chaîne de Markov – Parcours utilisateur e-commerce")
+plt.axis("off")
+plt.show()
 
 # Simulation d’un seul utilisateur
 def simuler_utilisateur(start_state="Accueil"):
