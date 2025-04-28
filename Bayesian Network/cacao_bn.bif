@@ -1,0 +1,34 @@
+network unknown {
+}
+variable Cacao_State {
+    type discrete [ 3 ] { -1, 0, 1 };
+}
+variable NASDAQ_State {
+    type discrete [ 2 ] { 0, 1 };
+}
+variable Taux_State {
+    type discrete [ 2 ] { 0, 1 };
+}
+variable VIX_State {
+    type discrete [ 2 ] { 0, 1 };
+}
+probability ( Cacao_State | NASDAQ_State, VIX_State ) {
+    ( 0, 0 ) 0.12446014919513156, 0.751079701609737, 0.12446014919513156;
+    ( 0, 1 ) 0.11994563370710161, 0.7030241250424737, 0.17703024125042474;
+    ( 1, 0 ) 0.1650836725463591, 0.6861148801447309, 0.14880144730891;
+    ( 1, 1 ) 0.14598903836572, 0.7259591429995018, 0.12805181863477827;
+
+}
+probability ( NASDAQ_State | Taux_State ) {
+    ( 0 ) 0.29901356350184954, 0.7009864364981504;
+    ( 1 ) 0.8333333333333334, 0.16666666666666666;
+
+}
+probability ( Taux_State ) {
+    table 0.5012360939431397, 0.49876390605686033 ;
+}
+probability ( VIX_State | Taux_State ) {
+    ( 0 ) 0.4938347718865598, 0.5061652281134402;
+    ( 1 ) 0.48636926889714993, 0.5136307311028501;
+
+}
