@@ -1,1 +1,6 @@
 *.csv
+
+# Ignorer les dossiers de dépendances ou fichiers temporaires (optionnel, bonne pratique)
+__pycache__/
+*.pyc
+.env/
