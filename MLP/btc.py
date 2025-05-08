@@ -1,18 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 import pandas as pd
 import requests
 from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
-# Récupérer les données historiques de BTC/EUR via Alpha Vantage
-# Remplace 'YOUR_API_KEY' par ta clé API obtenue sur https://www.alphavantage.co/support/#api-key
-api_key = '3YZUQJ9CPFR52AQ4'
+# (Même code pour récupérer les données via Alpha Vantage)
+api_key = 'YOUR_API_KEY'
 url = f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=EUR&apikey={api_key}'
-
-# Faire la requête à l'API
 try:
     r = requests.get(url)
     data = r.json()
@@ -22,16 +19,11 @@ except Exception as e:
     print(f"Erreur lors de la récupération des données : {e}")
     exit()
 
-# Extraire les données historiques
 time_series = data['Time Series (Digital Currency Daily)']
 df = pd.DataFrame.from_dict(time_series, orient='index')
 df = df.astype(float)
 
-# Afficher les colonnes disponibles pour inspection
-print("Colonnes disponibles dans les données :", df.columns)
-
-# Utiliser la bonne colonne pour le prix de clôture
-# On essaie '4b. close (EUR)' ou '4. close' selon ce qui est disponible
+# Sélectionner la bonne colonne
 close_column = None
 if '4b. close (EUR)' in df.columns:
     close_column = '4b. close (EUR)'
@@ -47,11 +39,11 @@ data = df[close_column].values
 # Différencier les données pour les rendre stationnaires
 data = np.diff(data)
 
-# Définir les hyperparamètres
-num_lags = 100
+# Définir les hyperparamètres ajustés
+num_lags = 50  # Réduit pour moins de bruit
 train_test_split = 0.80
 num_neurons_in_hidden_layers = 40
-num_epochs = 1000
+num_epochs = 500  # Réduit pour éviter le surapprentissage
 batch_size = 16
 
 # Fonction de prétraitement
@@ -69,8 +61,8 @@ def create_sequences(data, num_lags, train_test_split):
 # Préparer les données
 x_train, y_train, x_test, y_test = create_sequences(data, num_lags, train_test_split)
 
-# Normaliser les données
-scaler = MinMaxScaler()
+# Normaliser les données avec StandardScaler
+scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
@@ -78,11 +70,13 @@ x_test = scaler.transform(x_test)
 x_train = x_train.reshape((x_train.shape[0], x_train.shape[1]))
 x_test = x_test.reshape((x_test.shape[0], x_test.shape[1]))
 
-# Construire le modèle MLP
+# Construire le modèle MLP avec Dropout
 model = Sequential()
-model.add(Dense(num_neurons_in_hidden_layers, input_dim=num_lags, activation='relu'))  # Première couche cachée
-model.add(Dense(num_neurons_in_hidden_layers, activation='relu'))  # Deuxième couche cachée
-model.add(Dense(1))  # Couche de sortie (régression)
+model.add(Dense(num_neurons_in_hidden_layers, input_dim=num_lags, activation='relu'))
+model.add(Dropout(0.3))  # Ajout de Dropout pour réduire le surapprentissage
+model.add(Dense(num_neurons_in_hidden_layers, activation='relu'))
+model.add(Dropout(0.3))
+model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
 
 # Entraîner le modèle
@@ -106,5 +100,5 @@ plt.title('Prédictions vs Valeurs Réelles - Bitcoin Returns (BTC/EUR)')
 plt.xlabel('Temps')
 plt.ylabel('Rendement')
 plt.legend()
-plt.savefig('bitcoin_eur_returns_prediction.png')
+plt.savefig('bitcoin_eur_returns_prediction_adjusted.png')
 plt.show()
