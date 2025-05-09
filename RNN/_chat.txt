@@ -1,0 +1,189 @@
+[05/05/2025 15:11:37] Ouaraqua: ‎Les messages et les appels sont chiffrés de bout en bout. Seules les personnes prenant part à cette discussion peuvent les lire, les écouter ou les partager.
+[05/05/2025 15:11:37] Youss: Bonjour comment vous allez ??
+[05/05/2025 15:16:06] Ouaraqua: Bonjour Youssif
+[05/05/2025 15:16:19] Ouaraqua: Très bien et toi?
+[05/05/2025 15:17:32] Youss: Ça peut aller
+[05/05/2025 15:18:26] Youss: J’étais absent lors du meeting de ce matin je me sens pas bien c’est pour ça
+[05/05/2025 15:19:24] Youss: Je suis au bureau actuellement
+[05/05/2025 15:24:54] Youss: Après les tests c’est quoi la prochaine étape pour moi ??
+[05/05/2025 15:38:06] Ouaraqua: Tu peux commencer le onboarding
+[05/05/2025 15:38:10] Ouaraqua: ?
+[05/05/2025 15:48:36] Youss: D’accord….directement par le code ??
+[05/05/2025 15:56:51] Ouaraqua: Essaie de me faire un plan
+[05/05/2025 15:57:08] Ouaraqua: Schéma comme celui de Fatima
+[05/05/2025 15:57:59] Ouaraqua: Et montrer ce que tu vas modifier et créer et tu m’en parles demain in sha Allah
+[05/05/2025 16:16:29] Youss: D’accord
+[06/05/2025 10:40:24] Youss: Bonjour comment vous allez ??
+[06/05/2025 10:41:26] Youss: D’après vous on peut faire le nouveau onboarding sans msAccont ??
+[06/05/2025 10:44:57] Ouaraqua: Salam
+[06/05/2025 10:45:07] Ouaraqua: On fait un point ?
+[06/05/2025 10:46:31] Ouaraqua: https://meet.google.com/giq-cvwn-rvp
+[06/05/2025 10:46:43] Youss: D’accord
+[06/05/2025 16:22:47] Youss: Quand j’essaie de Onboard j’ai cette erreur dans keycloak
+2025-05-06 14:18:10,837 WARN [org.keycloak.events] (executor-thread-9) type=CLIENT_LOGIN_ERROR, realmId=ecc2806e-465b-4ae8-8aeb-4ce672781222, clientId=ms-users, userId=null, ipAddress=192.168.65.1, error=invalid_client_credentials, grant_type=client_credentials
+[06/05/2025 16:23:00] Youss: J’ai raté un truc avec keycloak ??
+[06/05/2025 16:35:57] Ouaraqua: Sûrement ton client id et ton secret qui ne sont pas bons. T’as demandé à Fatima? Je l’ai débloqué sur ça plusieurs fois
+[06/05/2025 16:47:18] Youss: Oui c’est bon merci
+[06/05/2025 17:15:11] Ouaraqua: Top
+[06/05/2025 17:26:52] Youss: Les too many request là c’est quoi qui fait ça ??
+[06/05/2025 18:28:45] Ouaraqua: Tu n’arrives pas à identifier ça dans le code ?
+[06/05/2025 18:33:22] Ouaraqua: tu peux me partager l’erreur dans la console?
+[06/05/2025 18:34:01] Youss: {
+    "timestamp": "2025-05-06T16:33:50.390+00:00",
+    "path": "/v1/otp/96193852",
+    "status": 429,
+    "error": "Too Many Requests",
+    "requestId": "648c6853-17"
+}
+[06/05/2025 18:34:40] Youss: HikariPool-2 - Thread starvation or clock leap detected (housekeeper delta=4m26s285ms).
+[06/05/2025 18:35:13] Ouaraqua: https://meet.google.com/ksu-zmdk-eob
+[06/05/2025 18:35:34] Ouaraqua: tu peux te connecter?
+[06/05/2025 18:54:29] Youss: Il faut me reaccepter dans la réunion
+[06/05/2025 19:00:27] Ouaraqua: ORGANIZATION
+[06/05/2025 19:00:36] Ouaraqua: MERCHANT
+[06/05/2025 19:07:45] Youss: D’accord
+[07/05/2025 11:39:11] Youss: Bonjour comment vous allez ??
+[07/05/2025 11:39:36] Youss: Pour créer une organization comment on fait pour bypasser le 401 ?
+[07/05/2025 11:48:10] Ouaraqua: Bonjour
+[07/05/2025 11:48:13] Ouaraqua: Ca va hamdoulilah
+[07/05/2025 11:48:39] Ouaraqua: S'authentifier?😅
+[07/05/2025 11:49:25] Ouaraqua: Si tu passe en mode debug, c'est où que t'as l'exception ?
+[07/05/2025 11:50:10] Youss: Le problème c’est que ça ne me renvoies même pas d’exception
+[07/05/2025 11:51:38] Ouaraqua: ok t’as pas le droit pour ton user
+[07/05/2025 11:52:10] Ouaraqua: disponible pour un point?
+[07/05/2025 11:52:32] Youss: Oui oui
+[07/05/2025 11:54:20] Ouaraqua: https://meet.google.com/bgw-yvwe-pxq
+[07/05/2025 12:41:17] Youss: String userId = userResource.toRepresentation().getId();
+            RoleRepresentation roleRepresentation = keycloakAdmin.realm(realm)
+                    .roles()
+                    .get(roleName)
+                    .toRepresentation();
+[07/05/2025 12:52:01] Ouaraqua: ‎Appel vocal manqué  ‎Cliquez pour rappeler
+[07/05/2025 12:53:05] Ouaraqua: Assign toi tous les rôles du client pour ms-users
+[07/05/2025 12:57:13] Ouaraqua: Tous les realms management
+[07/05/2025 12:58:20] Youss: D’accord je fais ça
+‎[07/05/2025 13:01:48] Ouaraqua: ‎image absente
+[07/05/2025 13:01:50] Ouaraqua: Et plus
+[07/05/2025 13:02:11] Youss: Oui c’est bon maintenant
+[07/05/2025 13:02:13] Youss: Merci
+[07/05/2025 13:03:20] Ouaraqua: Ok top
+[07/05/2025 13:04:27] Ouaraqua: Tu peux me rédiger une doc sur toute la conf que t’as faite aujourd’hui ?
+[07/05/2025 13:04:41] Ouaraqua: Sur keycloack
+[07/05/2025 13:04:49] Ouaraqua: Pour demain
+[07/05/2025 13:05:07] Youss: D’accord
+[07/05/2025 18:01:54] Youss: Bonsoir comment vous allez ??
+[07/05/2025 18:02:14] Ouaraqua: Bien et toi
+[07/05/2025 18:02:36] Youss: Les requêtes ne passent plus mobile et web
+[07/05/2025 18:02:45] Youss: Ça va aussi
+[07/05/2025 18:03:01] Youss: Not found
+[07/05/2025 18:03:38] Ouaraqua: Oui y a un problème de déploiement
+[07/05/2025 18:04:03] Ouaraqua: Je suis dessus
+[07/05/2025 18:04:12] Youss: D’accord
+[08/05/2025 11:02:51] Ouaraqua: salam youssif
+[08/05/2025 11:03:16] Ouaraqua: voici le endpoint de moov mobile money balance GET /v1/moov/adapter/mobile-money/account/balance
+[08/05/2025 11:05:22] Youss: D’accord je mets ça de suite
+[08/05/2025 11:12:04] Ouaraqua: Merci
+[08/05/2025 11:21:41] Youss: C’est censé renvoyé quoi ?? parce que j’ai pas admin
+[08/05/2025 11:24:36] Ouaraqua: pardon {
+    "code": "SUCCESSFULL",
+    "message": "Succès",
+    "timestamp": "2025-05-08T11:01:49.715029+02:00",
+    "content": {
+        "body": {
+            "balanceInquiryResponse": {
+                "return": {
+                    "responseCode": "0",
+                    "responseMessage": "Votre solde Flooz est de 1 002 611 FCFA. ",
+                    "referenceId": "220250508006519",
+                    "externalReference": "MVBMAF51T29AF3A",
+                    "extendedData": ""
+                }
+            }
+        }
+    }
+}
+[08/05/2025 11:25:30] Ouaraqua: autre sujet, t’as fait la doc? si oui tu peux me l’ envoyuer et. la pousser sur git
+[08/05/2025 11:30:41] Youss: Comment ça pousser ça sur git ?
+[08/05/2025 11:31:52] Ouaraqua: Tu peux le pousser sur le repo env local par exemple ?
+[08/05/2025 11:33:56] Youss: La doc ??
+[08/05/2025 11:40:13] Ouaraqua: ?
+[08/05/2025 11:56:20] Youss: Ahh la doc moi j’ai fais un document 😅
+[08/05/2025 11:57:01] Ouaraqua: Oui c’est bien
+[08/05/2025 11:57:10] Ouaraqua: Fais pousser ça sur git
+[08/05/2025 11:57:35] Youss: Donc je copie ça dans le projet et je pousse ça
+[08/05/2025 11:58:16] Ouaraqua: Oui
+[08/05/2025 11:59:48] Youss: Ahh daccord
+[08/05/2025 12:02:34] Youss: Il y’a la liste des users qui ne renvoie pas totalelements 
+Ce que je veux dire c’est que quand je fais cette requête 
+ getUsers(
+    page: number,
+    size: number,
+    sortField: string,
+    sortDirection: string,
+    filter: string
+  ): Observable<Page<UserDetail>> {
+    const params = {
+      page: page.toString(),
+      size: size.toString(),
+      sort: `${sortField},${sortDirection}`,
+      filter: filter, // Send the filter value to the backend
+    };
+    return this._httpClient.get<Page<UserDetail>>(
+      '/api/v1/users'
+    , { params });
+  }
+Je reçois totalelement= 10 si la pagesize est 10 ça ne renvoie pas tous les totals
+[08/05/2025 12:03:41] Youss: Je viens de lancer La PR
+[08/05/2025 12:26:34] Ouaraqua: Pour le web?
+[08/05/2025 12:27:32] Ouaraqua: Ça marche en production sur Sarki ‎<Ce message a été modifié>
+[08/05/2025 12:29:41] Youss: Non non ce qui fait qu’on peut pas avancer avec la pagination
+[08/05/2025 12:32:46] Ouaraqua: https://meet.google.com/paw-sxqs-edw
+[08/05/2025 12:33:04] Ouaraqua: rejoins moi
+[08/05/2025 12:34:21] Youss: D’accord
+[08/05/2025 12:43:45] Youss: Ahh oui est ce que le flooz marche ??
+[08/05/2025 12:44:08] Youss: Genre est ce que cela affiche la somme ??
+[08/05/2025 12:49:46] Ouaraqua: Non ça s’affiche pas
+[08/05/2025 12:49:59] Ouaraqua: Je te mets admin
+[08/05/2025 12:50:20] Youss: D’accord
+[08/05/2025 12:50:59] Ouaraqua: C’est bon
+[08/05/2025 15:30:56] Youss: D’accord c’est bon maintenant pour la pagination ainsi que moov
+[08/05/2025 15:33:25] Youss: par contre il renvoie de mon coté 200 mais dans responseMessage: il répond un problème d’authorization
+[08/05/2025 17:12:29] Ouaraqua: ‎Ce message a été supprimé.
+[08/05/2025 17:28:34] Ouaraqua: ah bon?
+[08/05/2025 17:28:43] Ouaraqua: moi j’ai ça {
+    "code": "SUCCESSFULL",
+    "message": "Succès",
+    "timestamp": "2025-05-08T17:27:50.403001+02:00",
+    "content": {
+        "body": {
+            "balanceInquiryResponse": {
+                "return": {
+                    "responseCode": "0",
+                    "responseMessage": "Votre solde Flooz est de 937 271 FCFA. ",
+                    "referenceId": "220250508036489",
+                    "externalReference": "MVBMAFIU84DAEBC",
+                    "extendedData": ""
+                }
+            }
+        }
+    }
+}
+[08/05/2025 17:35:49] Youss: Oui oui
+[08/05/2025 17:36:21] Youss: Ahh peut-être ils ont un problème
+[08/05/2025 17:39:00] Ouaraqua: ya aucun probleme
+[08/05/2025 17:39:12] Ouaraqua: ça marche en prod
+[08/05/2025 17:39:21] Ouaraqua: tu peux check
+[08/05/2025 17:40:05] Ouaraqua: ? moi ça me semble ok
+[08/05/2025 17:47:26] Youss: C’est bon maintenant
+[09/05/2025 16:52:57] Youss: Bonsoir comment vous allez ??
+[09/05/2025 16:53:44] Youss: Ibrahim Opération vient de me rappeler que il a pas encore vue la mise à jour de flooz
+[09/05/2025 17:23:12] Ouaraqua: Ça va hamdoulilah
+[09/05/2025 17:23:33] Ouaraqua: Et toi?
+[09/05/2025 17:23:46] Ouaraqua: Oui moi non plus j’allais te demander
+[09/05/2025 17:23:52] Ouaraqua: Je n’ai pas vu ta PR
+[09/05/2025 17:30:00] Youss: Je viens d’essayer de faire cela il me dit que il y’a rien à comparer
+[09/05/2025 17:30:25] Ouaraqua: Oui parce que je viens de merger
+[09/05/2025 17:30:33] Youss: Ça va aussi hamdoulilah
+[09/05/2025 17:30:42] Ouaraqua: J’ai compris que t’avais oublié la PR
+[09/05/2025 17:32:22] Youss: D’accord super
+[09/05/2025 17:33:59] Youss: Le lundi je pusherais une version pour le onboard des Marchands incha’Allah
