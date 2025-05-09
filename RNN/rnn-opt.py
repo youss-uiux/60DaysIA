@@ -7,6 +7,8 @@ import pandas as pd
 import requests
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import StandardScaler
+from deap import base, creator, tools, algorithms
+import random
 
 # Récupérer les données via Alpha Vantage
 api_key = 'YOUR_API_KEY'
@@ -45,87 +47,120 @@ def create_sequences(data, num_lags, train_test_split):
         y.append(data[i + num_lags])
     return np.array(X), np.array(y)
 
-# Fonction d'optimisation
-def optimize_rnn(data, param_grid, train_test_split=0.80):
-    best_mse = float('inf')
-    best_params = None
-    all_predictions = []
+# Préparer les données une seule fois (pour éviter de recalculer à chaque individu)
+train_test_split = 0.80
+max_lags = 100  # Maximum pour l'optimisation
+X, y = create_sequences(data, max_lags, train_test_split)
+train_size = int(len(X) * train_test_split)
+x_train_full, x_test_full = X[:train_size], X[train_size:]
+y_train_full, y_test_full = y[:train_size], y[train_size:]
+
+# Normalisation
+scaler = StandardScaler()
+x_train_full = scaler.fit_transform(x_train_full)
+x_test_full = scaler.transform(x_test_full)
+
+# Fonction de fitness (MSE Test)
+def evaluate_individual(individual):
+    num_lags, num_units, num_epochs, batch_size = individual
     
-    for lags in param_grid['num_lags']:
-        for units in param_grid['num_units']:
-            for epochs in param_grid['num_epochs']:
-                for batch in param_grid['batch_size']:
-                    # Préparer les données
-                    X, y = create_sequences(data, lags, train_test_split)
-                    train_size = int(len(X) * train_test_split)
-                    x_train, x_test = X[:train_size], X[train_size:]
-                    y_train, y_test = y[:train_size], y[train_size:]
+    # Ajuster num_lags pour les données
+    lag_diff = max_lags - num_lags
+    x_train = x_train_full[:, lag_diff:lag_diff+num_lags]
+    x_test = x_test_full[:, lag_diff:lag_diff+num_lags]
+    y_train = y_train_full
+    y_test = y_test_full
 
-                    # Normalisation
-                    scaler = StandardScaler()
-                    x_train = scaler.fit_transform(x_train)
-                    x_test = scaler.transform(x_test)
+    # Ajuster les dimensions pour le RNN
+    x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
+    x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
 
-                    # Ajuster les dimensions pour le RNN
-                    x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
-                    x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
+    # Modèle RNN
+    model = Sequential()
+    model.add(SimpleRNN(num_units, input_shape=(num_lags, 1), return_sequences=False))
+    model.add(Dropout(0.3))
+    model.add(Dense(20, activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error', optimizer='adam')
 
-                    # Modèle RNN
-                    model = Sequential()
-                    model.add(SimpleRNN(units, input_shape=(lags, 1), return_sequences=False))
-                    model.add(Dropout(0.3))
-                    model.add(Dense(20, activation='relu'))
-                    model.add(Dropout(0.3))
-                    model.add(Dense(1))
-                    model.compile(loss='mean_squared_error', optimizer='adam')
+    # Early stopping
+    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 
-                    # Early stopping
-                    early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    # Entraîner le modèle
+    history = model.fit(x_train, y_train.reshape(-1, 1), epochs=num_epochs, batch_size=batch_size,
+                        validation_split=0.2, verbose=0, callbacks=[early_stopping])
 
-                    # Entraîner le modèle
-                    history = model.fit(x_train, y_train.reshape(-1, 1), epochs=epochs, batch_size=batch,
-                                      validation_split=0.2, verbose=0, callbacks=[early_stopping])
+    # Prédictions
+    y_predicted = model.predict(x_test, verbose=0)
+    mse_test = mean_squared_error(y_test, y_predicted)
+    return mse_test,
 
-                    # Prédictions
-                    y_predicted_train = model.predict(x_train, verbose=0)
-                    y_predicted = model.predict(x_test, verbose=0)
+# Configuration de l'algorithme génétique avec DEAP
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))  # Minimiser le MSE
+creator.create("Individual", list, fitness=creator.FitnessMin)
 
-                    # Calculer l'erreur
-                    mse_train = mean_squared_error(y_train, y_predicted_train)
-                    mse_test = mean_squared_error(y_test, y_predicted)
-                    print(f"Lags: {lags}, Units: {units}, Epochs: {epochs}, Batch: {batch}")
-                    print(f"MSE Train: {mse_train:.6f}, MSE Test: {mse_test:.6f}")
+toolbox = base.Toolbox()
+toolbox.register("attr_lags", random.randint, 20, 100)  # num_lags entre 20 et 100
+toolbox.register("attr_units", random.randint, 20, 100)  # num_units entre 20 et 100
+toolbox.register("attr_epochs", random.randint, 50, 200)  # num_epochs entre 50 et 200
+toolbox.register("attr_batch", random.choice, [16, 32, 64])  # batch_size parmi [16, 32, 64]
+toolbox.register("individual", tools.initCycle, creator.Individual,
+                 (toolbox.attr_lags, toolbox.attr_units, toolbox.attr_epochs, toolbox.attr_batch), n=1)
+toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-                    # Mettre à jour le meilleur modèle
-                    if mse_test < best_mse:
-                        best_mse = mse_test
-                        best_params = {'num_lags': lags, 'num_units': units, 'num_epochs': epochs, 'batch_size': batch}
+toolbox.register("evaluate", evaluate_individual)
+toolbox.register("mate", tools.cxTwoPoint)
+toolbox.register("mutate", tools.mutUniformInt, low=[20, 20, 50, 16], up=[100, 100, 200, 64], indpb=0.2)
+toolbox.register("select", tools.selTournament, tournsize=3)
 
-                    # Stocker les prédictions pour l'ensembling
-                    all_predictions.append(y_predicted)
+# Exécuter l'algorithme génétique
+population = toolbox.population(n=10)  # Population initiale de 10 individus
+ngen = 5  # Nombre de générations
+all_predictions = []
 
-    # Ensembling : moyenne des prédictions
-    ensemble_pred = np.mean(all_predictions, axis=0)
-    ensemble_mse = mean_squared_error(y_test, ensemble_pred)
-    print(f"\nMeilleur MSE Test: {best_mse:.6f} avec {best_params}")
-    print(f"MSE Test Ensembling: {ensemble_mse:.6f}")
+for gen in range(ngen):
+    offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.2)
+    fits = toolbox.map(toolbox.evaluate, offspring)
+    for fit, ind in zip(fits, offspring):
+        ind.fitness.values = fit
+        # Entraîner un modèle avec cet individu et stocker ses prédictions
+        num_lags, num_units, num_epochs, batch_size = ind
+        lag_diff = max_lags - num_lags
+        x_train = x_train_full[:, lag_diff:lag_diff+num_lags]
+        x_test = x_test_full[:, lag_diff:lag_diff+num_lags]
+        x_train = x_train.reshape((x_train.shape[0], x_train.shape[1], 1))
+        x_test = x_test.reshape((x_test.shape[0], x_test.shape[1], 1))
+        model = Sequential()
+        model.add(SimpleRNN(num_units, input_shape=(num_lags, 1), return_sequences=False))
+        model.add(Dropout(0.3))
+        model.add(Dense(20, activation='relu'))
+        model.add(Dropout(0.3))
+        model.add(Dense(1))
+        model.compile(loss='mean_squared_error', optimizer='adam')
+        early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+        model.fit(x_train, y_train_full.reshape(-1, 1), epochs=num_epochs, batch_size=batch_size,
+                  validation_split=0.2, verbose=0, callbacks=[early_stopping])
+        y_pred = model.predict(x_test, verbose=0)
+        all_predictions.append(y_pred)
+    population = toolbox.select(offspring, k=len(population))
 
-    return best_params, ensemble_pred, y_test
+# Sélectionner le meilleur individu
+best_individual = tools.selBest(population, k=1)[0]
+best_params = {'num_lags': best_individual[0], 'num_units': best_individual[1],
+               'num_epochs': best_individual[2], 'batch_size': best_individual[3]}
+best_mse = best_individual.fitness.values[0]
 
-# Grille d'hyperparamètres à tester
-param_grid = {
-    'num_lags': [50, 100],
-    'num_units': [20, 50],
-    'num_epochs': [100, 200],
-    'batch_size': [16, 32]
-}
+# Ensembling
+ensemble_pred = np.mean(all_predictions, axis=0)
+ensemble_mse = mean_squared_error(y_test_full, ensemble_pred)
 
-# Exécuter l'optimisation
-best_params, ensemble_pred, y_test = optimize_rnn(data, param_grid)
+print(f"Meilleur MSE Test: {best_mse:.6f} avec {best_params}")
+print(f"MSE Test Ensembling: {ensemble_mse:.6f}")
 
-# Visualisation des prédictions ensemblées
+# Visualisation
 plt.figure(figsize=(12, 6))
-plt.plot(y_test, label='Valeurs réelles (Test)')
+plt.plot(y_test_full, label='Valeurs réelles (Test)')
 plt.plot(ensemble_pred, label='Prédictions Ensemblées (Test)')
 plt.title('Prédictions Ensemblées vs Valeurs Réelles - Bitcoin Returns (BTC/EUR) with RNN')
 plt.xlabel('Temps')
