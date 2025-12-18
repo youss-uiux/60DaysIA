@@ -101,38 +101,38 @@ def main():
         print(f"- Taille du vocabulaire: {model_params['VOCAB_SIZE']}")
         print("-" * 60)
 
-        print("\n🤖 Chatbot prêt ! Entrez vos questions ci-dessous.")
-        print("💡 Tapez 'quit', 'exit', 'sortir' ou 'arreter' pour quitter.")
+        print("\n Chatbot prêt ! Entrez vos questions ci-dessous.")
+        print("Tapez 'quit', 'exit', 'sortir' ou 'arreter' pour quitter.")
         print("-" * 60)
 
         # Boucle interactive
         while True:
             print("\n", end="")
-            user_input = input("👤 Vous: ")
+            user_input = input("Vous: ")
 
             # Vérifier les commandes de sortie
             if user_input.lower().strip() in ['quit', 'exit', 'sortir', 'arreter', 'stop']:
-                print("🤖 Bot: Au revoir ! À bientôt !")
+                print("Bot: Au revoir ! À bientôt !")
                 break
 
             # Vérifier que l'entrée n'est pas vide
             if not user_input.strip():
-                print("🤖 Bot: Veuillez entrer une question s'il vous plaît.")
+                print("Bot: Veuillez entrer une question s'il vous plaît.")
                 continue
 
             # Générer et afficher la réponse
             try:
                 response = generate_response(user_input, tokenizer, model_params, encoder_model, decoder_model)
                 if response.strip():
-                    print(f"🤖 Bot: {response}")
+                    print(f"Bot: {response}")
                 else:
-                    print("🤖 Bot: Je n'ai pas compris votre question. Pouvez-vous la reformuler ?")
+                    print("Bot: Je n'ai pas compris votre question. Pouvez-vous la reformuler ?")
             except Exception as e:
-                print(f"🤖 Bot: Désolé, j'ai eu un problème pour traiter votre question. ({e})")
+                print(f"Bot: Désolé, j'ai eu un problème pour traiter votre question. ({e})")
 
     except FileNotFoundError as e:
         print(f"\n❌ Erreur: Fichier manquant - {e}")
-        print("\n📁 Assurez-vous que tous les fichiers du modèle sont présents:")
+        print("\nAssurez-vous que tous les fichiers du modèle sont présents:")
         print("   - tokenizer.pickle")
         print("   - model_params.pickle")
         print("   - encoder_model.h5")
