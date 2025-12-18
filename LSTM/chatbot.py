@@ -128,7 +128,7 @@ model.summary()
 
 
 
-model.fit([encoder_input_data , decoder_input_data], decoder_output_data, batch_size=32, epochs=200)
+model.fit([encoder_input_data , decoder_input_data], decoder_output_data, batch_size=32, epochs=300)
 
 
 def inference():
@@ -150,15 +150,44 @@ def inference():
     return encoder_model, decoder_model
 
 def preprocess_input(input_sentence):
+    input_sentence = re.sub('[^a-zA-Z]', ' ', input_sentence.lower())
     tokens = input_sentence.lower().split()
     tokens_list = []
     for word in tokens:
-        tokens_list.append(tokenizer.word_index[word])
+        if word in tokenizer.word_index:
+            tokens_list.append(tokenizer.word_index[word])
+        else:
+            # Ignorer les mots inconnus ou utiliser un token spécial
+            tokens_list.append(tokenizer.word_index.get(word, 1))
     return preprocessing.sequence.pad_sequences([tokens_list] , maxlen=maxlen_questions , padding='post')
 
 enc_model , dec_model = inference()
 
-tests = ['Hello', 'Are you a bot', 'What is your name', 'That is a very long name', 'see you later']
+# Sauvegarder le modèle principal
+model.save('chatbot_model.h5')
+
+# Sauvegarder le tokenizer
+with open('tokenizer.pickle', 'wb') as handle:
+    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+# Sauvegarder les modèles d'inférence
+enc_model.save('encoder_model.h5')
+dec_model.save('decoder_model.h5')
+
+# Sauvegarder les paramètres importants
+model_params = {
+    'maxlen_questions': maxlen_questions,
+    'maxlen_answers': maxlen_answers,
+    'VOCAB_SIZE': VOCAB_SIZE
+}
+
+with open('model_params.pickle', 'wb') as handle:
+    pickle.dump(model_params, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+print("Modèle et tous les composants sauvegardés avec succès!")
+
+
+tests = ['Bonjour', 'Es-tu un robot', 'Quel est ton nom', 'Comment ça va', 'à bientôt']
 
 for i in range(5):
     states_values = enc_model.predict(preprocess_input(tests[i]))

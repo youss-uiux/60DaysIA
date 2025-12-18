@@ -1,48 +1,48 @@
 categories:
-- computers
+- ordinateurs
 conversations:
-- - What is a computer?
-  - A computer is an electronic device which takes information in digital form and performs a series of operations based on predetermined instructions to give some output.
-  - The thing you're using to talk to me is a computer.
-  - An electronic device capable of performing calculations at very high speed and with very high accuracy.
-  - A device which maps one set of numbers onto another set of numbers.
-- - What is a super computer?
-  - Computers which can perform very large numbers of calculations at very high speed and accuracy are called super computers.
-  - A supercomputer is a computer which operates at several orders of magnatude greater speed and capacity than everyday general purpose computers, like the one you are talking to me on.
-  - You know, the big iron!
-- - Who invented computers?
-  - It's a bit ambigous but British scientist Charles Babbage is regarded as the father of computers.
-  - One might argue that John von Neumann invented computers as we know them, because he invented the Princeton architecture, in which instructions and data share the same memory field but are differentiated by context.
-- - What was the first computer
-  - It's hard to say, but The ENIAC is regarded as the first 'real' computer. It was developed at University of Pennsylvania in 1946.
-  - You could say that the very first, primitive computer was the Jacquard Loom, which was a programmable loom that used punchcards to store the patterns it made.  This made it a reprogrammable mechanical device.
-- - What is a microprocessor?
-  - An integrated circuit that implements the functions of a central processing unit of a computer.
-  - A really small circuit which stores instructions and performs calculations for the computer.
-  - The heart of the computer, to put it simply.
-  - The brain of a computer, to put it simply.
-  - An electronic component in which all of the parts are part of a contiguous silicon chip, instead of discrete components mounted on a larger circuit board.
-- - What is an operating system?
-  - Software that coordinates between the hardware and other parts of the computer to run other software is called an operating system, or the OS.
-  - Windows, MacOS, Linux, UNIX... all of them are types of OSes.
-  - Android and iOS are operating systems for mobile devices.
-  - Software which implements the basic functions of a computer, such as memory access, processes, and peripheral access.
-- - Which is better Windows or macOS?
-  - It depends on which machine you're using to talk to me!
-  - I'd prefer to not hurt your feelings.
-  - Linux, always Linux!
-  - What are you trying to accomplish.  The OS should support your goals.
-- - Name some computer company
-  - Do you mean hardware or software?
-  - Apple makes hardware and software to run on it.  Microsft only makes operating systems.  HP makes only computers.  These are just few names among several hundred others.
-- - Who uses super computers?
-  - Anybody who wants to work with large numbers quickly with high accuracy.
-  - Anyone who needs to work with very, very large sets of data in much shorter periods of time than is feasible with more common computer systems.
-  - Supercomputers are generally used by scientists and researchers.
-  - I bet the MET department uses them.
-  - You can definitely find few of them at NASA.
-- - How does a computer work?
-  - Computers are very dumb.  They only execute instructions given by humans.
-  - Computers do everything asked of them by carrying out large numbers of basic mathematical operations very rapidly in sequence.
-  - Computers perform very large number of calculations to get the result.
-  - Just like everything it all comes down to math!
+- - Qu'est-ce qu'un ordinateur ?
+  - Un ordinateur est un dispositif électronique qui prend des informations sous forme numérique et effectue une série d'opérations basées sur des instructions prédéterminées pour donner un résultat.
+  - La chose que tu utilises pour me parler est un ordinateur.
+  - Un dispositif électronique capable d'effectuer des calculs à très haute vitesse et avec une très haute précision.
+  - Un dispositif qui mappe un ensemble de nombres sur un autre ensemble de nombres.
+- - Qu'est-ce qu'un super ordinateur ?
+  - Les ordinateurs qui peuvent effectuer de très grands nombres de calculs à très haute vitesse et précision sont appelés super ordinateurs.
+  - Un superordinateur est un ordinateur qui fonctionne à plusieurs ordres de grandeur de vitesse et de capacité supérieurs aux ordinateurs généralistes quotidiens, comme celui sur lequel tu me parles.
+  - Tu sais, le gros matériel !
+- - Qui a inventé les ordinateurs ?
+  - C'est un peu ambigu mais le scientifique britannique Charles Babbage est considéré comme le père des ordinateurs.
+  - On pourrait argumenter que John von Neumann a inventé les ordinateurs tels que nous les connaissons, car il a inventé l'architecture de Princeton, dans laquelle les instructions et les données partagent le même champ mémoire mais sont différenciées par le contexte.
+- - Quel était le premier ordinateur
+  - C'est difficile à dire, mais l'ENIAC est considéré comme le premier 'vrai' ordinateur. Il a été développé à l'Université de Pennsylvanie en 1946.
+  - Tu pourrais dire que le tout premier ordinateur primitif était le métier à tisser Jacquard, qui était un métier programmable utilisant des cartes perforées pour stocker les motifs qu'il créait. Cela en faisait un dispositif mécanique reprogrammable.
+- - Qu'est-ce qu'un microprocesseur ?
+  - Un circuit intégré qui implémente les fonctions d'une unité centrale de traitement d'un ordinateur.
+  - Un circuit vraiment petit qui stocke les instructions et effectue des calculs pour l'ordinateur.
+  - Le cœur de l'ordinateur, pour le dire simplement.
+  - Le cerveau d'un ordinateur, pour le dire simplement.
+  - Un composant électronique dans lequel toutes les parties font partie d'une puce de silicium contiguë, au lieu de composants discrets montés sur une carte de circuit plus grande.
+- - Qu'est-ce qu'un système d'exploitation ?
+  - Un logiciel qui coordonne entre le matériel et les autres parties de l'ordinateur pour faire fonctionner d'autres logiciels est appelé un système d'exploitation, ou l'OS.
+  - Windows, MacOS, Linux, UNIX... tous sont des types d'OS.
+  - Android et iOS sont des systèmes d'exploitation pour appareils mobiles.
+  - Un logiciel qui implémente les fonctions de base d'un ordinateur, comme l'accès à la mémoire, les processus et l'accès aux périphériques.
+- - Lequel est meilleur Windows ou macOS ?
+  - Ça dépend de quelle machine tu utilises pour me parler !
+  - Je préférerais ne pas blesser tes sentiments.
+  - Linux, toujours Linux !
+  - Qu'essaies-tu d'accomplir. L'OS devrait soutenir tes objectifs.
+- - Nomme quelques entreprises informatiques
+  - Veux-tu dire matériel ou logiciel ?
+  - Apple fait du matériel et des logiciels pour fonctionner dessus. Microsoft ne fait que des systèmes d'exploitation. HP ne fait que des ordinateurs. Ce ne sont que quelques noms parmi plusieurs centaines d'autres.
+- - Qui utilise les super ordinateurs ?
+  - Quiconque veut travailler avec de grands nombres rapidement avec une haute précision.
+  - Quiconque a besoin de travailler avec de très, très grands ensembles de données dans des périodes beaucoup plus courtes que ce qui est faisable avec des systèmes informatiques plus communs.
+  - Les superordinateurs sont généralement utilisés par les scientifiques et les chercheurs.
+  - Je parie que le département de la météorologie les utilise.
+  - Tu peux certainement en trouver quelques-uns à la NASA.
+- - Comment fonctionne un ordinateur ?
+  - Les ordinateurs sont très bêtes. Ils n'exécutent que les instructions données par les humains.
+  - Les ordinateurs font tout ce qu'on leur demande en effectuant de grands nombres d'opérations mathématiques de base très rapidement en séquence.
+  - Les ordinateurs effectuent un très grand nombre de calculs pour obtenir le résultat.
+  - Comme tout, tout se résume aux mathématiques !

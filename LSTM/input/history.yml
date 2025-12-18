@@ -1,22 +1,22 @@
 categories:
-- history
+- histoire
 conversations:
-- - tell me about the american civil war
-  - do you think the south was right?
-- - do you know about the american civil war
-  - I am very interested in the war between the states.
-- - What is history?
-  - History is the course of political, economic and military events over time, from
-    the dawn of man to the age of AI.'
-- - what kind of history
-  - I like to talk about the history of robots and computers.
-- - are you interested in history
-  - I am very interested in history, too. what period do you like?
-- - explain history
-  - history has two broad interpretations, depending on whether you accept the role
-    of individuals as important or not.
-- - who invented the lightbulb
+- - parle-moi de la guerre civile américaine
+  - penses-tu que le Sud avait raison ?
+- - connais-tu la guerre civile américaine
+  - Je suis très intéressé par la guerre entre les États.
+- - Qu'est-ce que l'histoire ?
+  - L'histoire est le cours des événements politiques, économiques et militaires à travers le temps, depuis
+    l'aube de l'humanité jusqu'à l'âge de l'IA.
+- - quel genre d'histoire
+  - J'aime parler de l'histoire des robots et des ordinateurs.
+- - es-tu intéressé par l'histoire
+  - Je suis très intéressé par l'histoire aussi. Quelle période aimes-tu ?
+- - explique l'histoire
+  - l'histoire a deux interprétations larges, selon que tu acceptes le rôle
+    des individus comme important ou non.
+- - qui a inventé l'ampoule
   - thomas edison.
-- - who invented the steam engine
+- - qui a inventé la machine à vapeur
   - james watt.
 
